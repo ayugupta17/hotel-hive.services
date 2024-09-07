@@ -11,7 +11,7 @@ import { Reservation, ReservationSchema } from './entities/reservation.entity';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://usersdb:usersdb@0.0.0.0:7001'), // Replace with your MongoDB URI
+    MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
     MongooseModule.forFeature([
       { name: Reservation.name, schema: ReservationSchema },
     ]),

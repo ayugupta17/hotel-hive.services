@@ -3,6 +3,6 @@ import { ReservationsModule } from './reservations.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ReservationsModule);
-  await app.listen(3002);
+  await app.listen(process.env.RESERVATIONS_SERVICE_PORT);
 }
 bootstrap();

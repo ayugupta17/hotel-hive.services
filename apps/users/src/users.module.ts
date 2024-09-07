@@ -12,7 +12,7 @@ import {
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://usersdb:usersdb@0.0.0.0:7001'), // Replace with your MongoDB URI
+    MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,

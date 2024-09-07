@@ -16,17 +16,21 @@ import { authContext } from './context/auth.context';
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
           subgraphs: [
-            // {
-            //   name: 'users',
-            //   url: 'http://localhost:3001/graphql',
-            // },
-            // {
-            //   name: 'reservations',
-            //   url: 'http://localhost:3002/graphql',
-            // },
+            {
+              name: 'users',
+              url: 'http://localhost:3001/graphql',
+            },
+            {
+              name: 'reservations',
+              url: 'http://localhost:3002/graphql',
+            },
             {
               name: 'hotels',
               url: 'http://localhost:3003/graphql',
+            },
+            {
+              name: 'payments',
+              url: 'http://localhost:3004/graphql',
             },
           ],
         }),

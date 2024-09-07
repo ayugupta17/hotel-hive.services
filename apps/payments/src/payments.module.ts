@@ -5,14 +5,14 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HotelsService } from './hotels.service';
-import { HotelsResolver } from './hotels.resolver';
-import { Hotel, HotelSchema } from './entities/hotel.entity';
+import { PaymentsService } from './payments.service';
+import { PaymentsResolver } from './payments.resolver';
+import { Payment, PaymentSchema } from './entities/payment.entity';
 
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
-    MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
+    MongooseModule.forFeature([{ name: Payment.name, schema: PaymentSchema }]),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: {
@@ -20,6 +20,6 @@ import { Hotel, HotelSchema } from './entities/hotel.entity';
       },
     }),
   ],
-  providers: [HotelsResolver, HotelsService],
+  providers: [PaymentsResolver, PaymentsService],
 })
-export class HotelsModule {}
+export class PaymentsModule {}
