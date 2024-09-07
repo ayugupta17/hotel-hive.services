@@ -1,46 +1,43 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  ResolveReference,
-} from '@nestjs/graphql';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 
-@Resolver(() => User)
+@Resolver((of) => User)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
-
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.usersService.create(createUserInput);
-  }
-
-  @Query(() => [User], { name: 'users' })
-  findAll() {
+  constructor(private usersService: UsersService) {}
+  @Query((returns) => [User])
+  users(): User[] {
     return this.usersService.findAll();
   }
-
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id') id: string) {
+  @Query((returns) => User)
+  user(@Args('id') id: string): User {
     return this.usersService.findOne(id);
   }
-
-  @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+  @Mutation((returns) => User)
+  createUser(
+    @Args('name') name: string,
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('dob') dob: Date,
+    @Args('roleId') roleId: string,
+  ): User {
+    return this.usersService.create({ name, email, password, dob, roleId });
   }
-
-  @Mutation(() => User)
-  removeUser(@Args('id') id: string) {
-    return this.usersService.remove(id);
+  @Mutation((returns) => User)
+  updateUser(
+    @Args('id') id: string,
+    @Args('name') name: string,
+    @Args('email') email: string,
+    @Args('password') password: string,
+    @Args('dob') dob: Date,
+    @Args('roleId') roleId: string,
+  ): User {
+    return this.usersService.update(id, { name, email, password, dob, roleId });
   }
-
-  @ResolveReference()
-  resolveReference(reference: { __typename: string; id: string }): User {
-    return this.usersService.findOne(reference.id);
+  @Mutation((returns) => Boolean)
+  removeUser(@Args('id') id: string): boolean {
+    this.usersService.remove(id);
+    return true;
   }
 }
