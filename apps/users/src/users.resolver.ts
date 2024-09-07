@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
@@ -7,11 +6,11 @@ import { User } from './entities/user.entity';
 export class UsersResolver {
   constructor(private usersService: UsersService) {}
   @Query((returns) => [User])
-  users(): User[] {
+  users(): Promise<User[]> {
     return this.usersService.findAll();
   }
   @Query((returns) => User)
-  user(@Args('id') id: string): User {
+  user(@Args('id') id: string): Promise<User> {
     return this.usersService.findOne(id);
   }
   @Mutation((returns) => User)
@@ -21,7 +20,7 @@ export class UsersResolver {
     @Args('password') password: string,
     @Args('dob') dob: Date,
     @Args('roleId') roleId: string,
-  ): User {
+  ): Promise<User> {
     return this.usersService.create({ name, email, password, dob, roleId });
   }
   @Mutation((returns) => User)
@@ -32,7 +31,7 @@ export class UsersResolver {
     @Args('password') password: string,
     @Args('dob') dob: Date,
     @Args('roleId') roleId: string,
-  ): User {
+  ): Promise<User> {
     return this.usersService.update(id, { name, email, password, dob, roleId });
   }
   @Mutation((returns) => Boolean)

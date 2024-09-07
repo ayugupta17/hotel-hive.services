@@ -5,31 +5,42 @@ import { Field, ObjectType, ID } from '@nestjs/graphql';
 
 @ObjectType()
 @Schema()
-export class User extends Document {
+export class Reservation extends Document {
   @Field((type) => ID)
   @Prop()
   id: string;
   @Field()
   @Prop()
-  name: string;
+  userId: string;
   @Field()
   @Prop()
-  email: string;
+  hotelId: string;
   @Field()
   @Prop()
-  password: string;
+  rooms: number;
   @Field()
   @Prop()
-  dob: Date;
+  bookingAmount: number;
+  @Field()
+  @Prop()
+  paymentId: string;
+  @Field()
+  @Prop()
+  paymentStatus: string;
+  @Field()
+  @Prop()
+  startDate: Date;
+  @Field()
+  @Prop()
+  endDate: Date;
+  @Field()
+  @Prop()
+  additionalGuests: number;
   @Field()
   @Prop({ default: Date.now })
   createdOn: Date;
   @Field()
   @Prop({ default: Date.now })
   modifiedOn: Date;
-  @Field()
-  @Prop()
-  roleId: string;
 }
-
-export const UserSchema = SchemaFactory.createForClass(User);
+export const ReservationSchema = SchemaFactory.createForClass(Reservation);

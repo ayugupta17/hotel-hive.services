@@ -20,6 +20,10 @@ import { authContext } from './context/auth.context';
               name: 'users',
               url: 'http://localhost:3001/graphql',
             },
+            {
+              name: 'reservations',
+              url: 'http://localhost:3002/graphql',
+            },
           ],
         }),
         buildService({ url }) {
