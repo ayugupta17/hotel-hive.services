@@ -4,20 +4,31 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { MongooseModule } from '@nestjs/mongoose';
 import { HotelsService } from './hotels.service';
 import { HotelsResolver } from './hotels.resolver';
 import { Hotel, HotelSchema } from './entities/hotel.entity';
-import { DatabaseModule } from '@app/common';
+import { AuthModule, DatabaseModule, LoggerModule } from '@app/common';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    JwtModule,
+    AuthModule,
     DatabaseModule,
-    MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
+    DatabaseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
+    LoggerModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,
+      },
+      context: ({ req }) => {
+        const token = req.headers.authorization?.split(' ')[1];
+        return { token };
       },
     }),
   ],

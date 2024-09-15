@@ -2,19 +2,24 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ReservationsService } from './reservations.service';
 import { Reservation } from './entities/reservation.entity';
+import { AuthGuard } from '@app/common';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => Reservation)
 export class ReservationsResolver {
   constructor(private reservationsService: ReservationsService) {}
   @Query((returns) => [Reservation])
+  @UseGuards(AuthGuard)
   reservations(): Promise<Reservation[]> {
     return this.reservationsService.findAll();
   }
   @Query((returns) => Reservation)
+  @UseGuards(AuthGuard)
   reservation(@Args('id') id: string): Promise<Reservation> {
     return this.reservationsService.findOne(id);
   }
   @Mutation((returns) => Reservation)
+  @UseGuards(AuthGuard)
   createReservation(
     @Args('userId') userId: string,
     @Args('hotelId') hotelId: string,
@@ -39,6 +44,7 @@ export class ReservationsResolver {
     });
   }
   @Mutation((returns) => Reservation)
+  @UseGuards(AuthGuard)
   updateReservation(
     @Args('id') id: string,
     @Args('userId') userId: string,
@@ -64,6 +70,7 @@ export class ReservationsResolver {
     });
   }
   @Mutation((returns) => Boolean)
+  @UseGuards(AuthGuard)
   removeReservation(@Args('id') id: string): Promise<boolean> {
     return this.reservationsService.remove(id).then(() => true);
   }

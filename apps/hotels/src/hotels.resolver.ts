@@ -2,19 +2,24 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { HotelsService } from './hotels.service';
 import { Hotel } from './entities/hotel.entity';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@app/common';
 
 @Resolver((of) => Hotel)
 export class HotelsResolver {
   constructor(private hotelsService: HotelsService) {}
   @Query((returns) => [Hotel])
+  @UseGuards(AuthGuard)
   hotels(): Promise<Hotel[]> {
     return this.hotelsService.findAll();
   }
   @Query((returns) => Hotel)
+  @UseGuards(AuthGuard)
   hotel(@Args('id') id: string): Promise<Hotel> {
     return this.hotelsService.findOne(id);
   }
   @Mutation((returns) => Hotel)
+  @UseGuards(AuthGuard)
   createHotel(
     @Args('name') name: string,
     @Args('type') type: string,
@@ -44,6 +49,7 @@ export class HotelsResolver {
     });
   }
   @Mutation((returns) => Hotel)
+  @UseGuards(AuthGuard)
   updateHotel(
     @Args('id') id: string,
     @Args('name') name: string,
@@ -74,6 +80,7 @@ export class HotelsResolver {
     });
   }
   @Mutation((returns) => Boolean)
+  @UseGuards(AuthGuard)
   removeHotel(@Args('id') id: string): Promise<boolean> {
     return this.hotelsService.remove(id).then(() => true);
   }
