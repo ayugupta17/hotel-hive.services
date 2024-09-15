@@ -35,4 +35,10 @@ export class ReservationsService {
   async remove(id: string): Promise<void> {
     await this.reservationModel.deleteOne({ id }).exec();
   }
+  async findAllByUser(userId: string): Promise<Reservation[]> {
+    return this.reservationModel.find({ userId }).exec();
+  }
+  async findOneByUser(id: string, userId: string): Promise<Reservation> {
+    return this.reservationModel.findOne({ id, userId }).exec();
+  }
 }

@@ -1,4 +1,25 @@
 services:
+  # hotel-hive:
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/hotel-hive.services/Dockerfile
+  #     target: development
+  #   command: npm run start:dev
+  #   ports:
+  #     - '3000:3000'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     users:
+  #       condition: service_healthy
+  #     reservations:
+  #       condition: service_healthy
+  #     hotels:
+  #       condition: service_healthy
+  #     payments:
+  #       condition: service_healthy
+  # volumes:
+  #   - .:/usr/src/app
   users:
     build:
       context: .
@@ -7,8 +28,10 @@ services:
     command: npm run start:dev users
     ports:
       - '3001:3001'
-    volumes:
-      - .:/usr/src/app
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/usr/src/app
   reservations:
     build:
       context: .
@@ -17,8 +40,10 @@ services:
     command: npm run start:dev reservations
     ports:
       - '3002:3002'
-    volumes:
-      - .:/usr/src/app
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/usr/src/app
   hotels:
     build:
       context: .
@@ -27,8 +52,10 @@ services:
     command: npm run start:dev hotels
     ports:
       - '3003:3003'
-    volumes:
-      - .:/usr/src/app
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/usr/src/app
   payments:
     build:
       context: .
@@ -37,7 +64,9 @@ services:
     command: npm run start:dev payments
     ports:
       - '3004:3004'
-    volumes:
-      - .:/usr/src/app
+    env_file:
+      - .env
+    # volumes:
+    #   - .:/usr/src/app
   mongo:
     image: mongo

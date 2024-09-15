@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ReservationsService } from './reservations.service';
 import { Reservation } from './entities/reservation.entity';
 import { AuthGuard } from '@app/common';
@@ -13,15 +13,29 @@ export class ReservationsResolver {
   reservations(): Promise<Reservation[]> {
     return this.reservationsService.findAll();
   }
+  @Query((returns) => [Reservation])
+  @UseGuards(AuthGuard)
+  reservationsByUserId(@Context() context): Promise<Reservation[]> {
+    const userId = context.user.userId;
+    return this.reservationsService.findAllByUser(userId);
+  }
   @Query((returns) => Reservation)
   @UseGuards(AuthGuard)
   reservation(@Args('id') id: string): Promise<Reservation> {
     return this.reservationsService.findOne(id);
   }
+  @Query((returns) => Reservation)
+  @UseGuards(AuthGuard)
+  reservationByUserId(
+    @Args('id') id: string,
+    @Context() context,
+  ): Promise<Reservation> {
+    const userId = context.user.userId;
+    return this.reservationsService.findOneByUser(id, userId);
+  }
   @Mutation((returns) => Reservation)
   @UseGuards(AuthGuard)
   createReservation(
-    @Args('userId') userId: string,
     @Args('hotelId') hotelId: string,
     @Args('rooms') rooms: number,
     @Args('bookingAmount') bookingAmount: number,
@@ -30,7 +44,9 @@ export class ReservationsResolver {
     @Args('startDate') startDate: Date,
     @Args('endDate') endDate: Date,
     @Args('additionalGuests') additionalGuests: number,
+    @Context() context,
   ): Promise<Reservation> {
+    const userId = context.user.userId;
     return this.reservationsService.create({
       userId,
       hotelId,
@@ -47,7 +63,6 @@ export class ReservationsResolver {
   @UseGuards(AuthGuard)
   updateReservation(
     @Args('id') id: string,
-    @Args('userId') userId: string,
     @Args('hotelId') hotelId: string,
     @Args('rooms') rooms: number,
     @Args('bookingAmount') bookingAmount: number,
@@ -56,7 +71,9 @@ export class ReservationsResolver {
     @Args('startDate') startDate: Date,
     @Args('endDate') endDate: Date,
     @Args('additionalGuests') additionalGuests: number,
+    @Context() context,
   ): Promise<Reservation> {
+    const userId = context.user.userId;
     return this.reservationsService.update(id, {
       userId,
       hotelId,

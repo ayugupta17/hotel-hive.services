@@ -12,7 +12,12 @@ export class AuthService {
     return await bcrypt.compare(password, hashedPassword);
   }
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = {
+      email: user.email,
+      id: user.id,
+      roleId: user.roleId,
+      sub: user.id,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };
