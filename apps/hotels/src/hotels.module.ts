@@ -8,10 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HotelsService } from './hotels.service';
 import { HotelsResolver } from './hotels.resolver';
 import { Hotel, HotelSchema } from './entities/hotel.entity';
+import { DatabaseModule } from '@app/common';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
+    DatabaseModule,
     MongooseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,

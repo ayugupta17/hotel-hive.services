@@ -8,10 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ReservationsService } from './reservations.service';
 import { ReservationsResolver } from './reservations.resolver';
 import { Reservation, ReservationSchema } from './entities/reservation.entity';
+import { DatabaseModule } from '@app/common';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
+    DatabaseModule,
     MongooseModule.forFeature([
       { name: Reservation.name, schema: ReservationSchema },
     ]),

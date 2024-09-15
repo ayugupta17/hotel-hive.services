@@ -8,10 +8,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PaymentsService } from './payments.service';
 import { PaymentsResolver } from './payments.resolver';
 import { Payment, PaymentSchema } from './entities/payment.entity';
+import { DatabaseModule } from '@app/common';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URL), // Replace with your MongoDB URI
+    DatabaseModule,
     MongooseModule.forFeature([{ name: Payment.name, schema: PaymentSchema }]),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
