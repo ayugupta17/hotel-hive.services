@@ -5,9 +5,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { authContext } from './context/auth.context';
+import { LoggerModule } from '@app/common';
 
 @Module({
   imports: [
+    LoggerModule,
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       server: {
