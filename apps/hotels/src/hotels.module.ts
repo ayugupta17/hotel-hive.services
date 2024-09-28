@@ -10,6 +10,9 @@ import { Hotel, HotelSchema } from './entities/hotel.entity';
 import { AuthModule, DatabaseModule, LoggerModule } from '@app/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { RoomsResolver } from './rooms/room.resolver';
+import { RoomsService } from './rooms/rooms.service';
+import { Room, RoomSchema } from './entities/room.entity';
 
 @Module({
   imports: [
@@ -19,7 +22,10 @@ import { ConfigModule } from '@nestjs/config';
     JwtModule,
     AuthModule,
     DatabaseModule,
-    DatabaseModule.forFeature([{ name: Hotel.name, schema: HotelSchema }]),
+    DatabaseModule.forFeature([
+      { name: Hotel.name, schema: HotelSchema },
+      { name: Room.name, schema: RoomSchema },
+    ]),
     LoggerModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
@@ -28,10 +34,10 @@ import { ConfigModule } from '@nestjs/config';
       },
       context: ({ req }) => {
         const token = req.headers.authorization?.split(' ')[1];
-        return { token };
+        return { token, req };
       },
     }),
   ],
-  providers: [HotelsResolver, HotelsService],
+  providers: [HotelsResolver, HotelsService, RoomsResolver, RoomsService],
 })
 export class HotelsModule {}

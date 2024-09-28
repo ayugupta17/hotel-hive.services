@@ -1,13 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { HotelsService } from './hotels.service';
 import { Hotel } from './entities/hotel.entity';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@app/common';
+import { Room } from './entities/room.entity';
+import { RoomsService } from './rooms/rooms.service';
 
 @Resolver((of) => Hotel)
 export class HotelsResolver {
-  constructor(private hotelsService: HotelsService) {}
+  constructor(
+    private hotelsService: HotelsService,
+    private roomsService: RoomsService,
+  ) {}
   @Query((returns) => [Hotel])
   @UseGuards(AuthGuard)
   hotels(): Promise<Hotel[]> {
@@ -83,5 +95,10 @@ export class HotelsResolver {
   @UseGuards(AuthGuard)
   removeHotel(@Args('id') id: string): Promise<boolean> {
     return this.hotelsService.remove(id).then(() => true);
+  }
+  @ResolveField('rooms', (returns) => [Room])
+  async getRooms(@Parent() hotel: Hotel): Promise<Room[]> {
+    const { id } = hotel;
+    return this.roomsService.findByHotelId(id);
   }
 }

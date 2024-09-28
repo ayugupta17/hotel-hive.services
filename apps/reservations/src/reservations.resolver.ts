@@ -16,7 +16,7 @@ export class ReservationsResolver {
   @Query((returns) => [Reservation])
   @UseGuards(AuthGuard)
   reservationsByUserId(@Context() context): Promise<Reservation[]> {
-    const userId = context.user.userId;
+    const userId = context.user.id;
     return this.reservationsService.findAllByUser(userId);
   }
   @Query((returns) => Reservation)
@@ -30,7 +30,7 @@ export class ReservationsResolver {
     @Args('id') id: string,
     @Context() context,
   ): Promise<Reservation> {
-    const userId = context.user.userId;
+    const userId = context.user.id;
     return this.reservationsService.findOneByUser(id, userId);
   }
   @Mutation((returns) => Reservation)
@@ -46,7 +46,8 @@ export class ReservationsResolver {
     @Args('additionalGuests') additionalGuests: number,
     @Context() context,
   ): Promise<Reservation> {
-    const userId = context.user.userId;
+    const userId = context.user.id;
+    console.log(userId);
     return this.reservationsService.create({
       userId,
       hotelId,
@@ -73,7 +74,7 @@ export class ReservationsResolver {
     @Args('additionalGuests') additionalGuests: number,
     @Context() context,
   ): Promise<Reservation> {
-    const userId = context.user.userId;
+    const userId = context.user.id;
     return this.reservationsService.update(id, {
       userId,
       hotelId,

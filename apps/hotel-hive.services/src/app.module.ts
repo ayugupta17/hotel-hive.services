@@ -41,8 +41,8 @@ import { LoggerModule } from '@app/common';
             url,
             willSendRequest({ request, context }) {
               request.http.headers.set(
-                'user',
-                context.user ? JSON.stringify(context.user) : null,
+                'authorization',
+                context.token ? context.token : null,
               );
             },
           });
