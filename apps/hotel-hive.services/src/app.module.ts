@@ -20,19 +20,19 @@ import { LoggerModule } from '@app/common';
           subgraphs: [
             {
               name: 'users',
-              url: 'http://localhost:3001/graphql',
+              url: 'http://users:3001/graphql',
             },
             {
               name: 'reservations',
-              url: 'http://localhost:3002/graphql',
+              url: 'http://reservations:3002/graphql',
             },
             {
               name: 'hotels',
-              url: 'http://localhost:3003/graphql',
+              url: 'http://hotels:3003/graphql',
             },
             {
               name: 'payments',
-              url: 'http://localhost:3004/graphql',
+              url: 'http://payments:3004/graphql',
             },
           ],
         }),

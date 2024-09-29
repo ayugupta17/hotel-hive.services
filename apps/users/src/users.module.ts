@@ -14,7 +14,7 @@ import { AuthModule } from '@app/common';
 import { AuthResolver } from './auth/auth.resolver';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { PrometheusModule } from './prometheus/prometheus.module';
+import { CustomPrometheusModule, HealthModule } from '@app/common';
 
 @Module({
   imports: [
@@ -36,7 +36,8 @@ import { PrometheusModule } from './prometheus/prometheus.module';
         return { token };
       },
     }),
-    PrometheusModule,
+    CustomPrometheusModule,
+    HealthModule,
   ],
   providers: [UsersResolver, UsersService, AuthResolver],
 })

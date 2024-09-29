@@ -10,6 +10,7 @@ import { Reservation, ReservationSchema } from './entities/reservation.entity';
 import { AuthModule, DatabaseModule, LoggerModule } from '@app/common';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { CustomPrometheusModule, HealthModule } from '@app/common';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule,
     AuthModule,
     DatabaseModule,
+    CustomPrometheusModule,
+    HealthModule,
     DatabaseModule.forFeature([
       { name: Reservation.name, schema: ReservationSchema },
     ]),

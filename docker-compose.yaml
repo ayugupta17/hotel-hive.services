@@ -1,23 +1,25 @@
 services:
-  # hotel-hive:
-  #   build:
-  #     context: .
-  #     dockerfile: ./apps/hotel-hive.services/Dockerfile
-  #     target: development
-  #   command: npm run start:dev
-  #   ports:
-  #     - '3000:3000'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     users:
-  #       condition: service_healthy
-  #     reservations:
-  #       condition: service_healthy
-  #     hotels:
-  #       condition: service_healthy
-  #     payments:
-  #       condition: service_healthy
+  #gateway
+  hotel-hive:
+    build:
+      context: .
+      dockerfile: ./apps/hotel-hive.services/Dockerfile
+      target: development
+    command: npm run start:dev
+    ports:
+      - '3006:3006'
+    env_file:
+      - .env
+    depends_on:
+      users:
+        condition: service_healthy
+      hotels:
+        condition: service_healthy
+      reservations:
+        condition: service_healthy
+      payments:
+        condition: service_healthy
+    restart: 'always'
   # volumes:
   #   - .:/usr/src/app
   users:
@@ -30,6 +32,11 @@ services:
       - '3001:3001'
     env_file:
       - .env
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3001/health']
+      interval: 30s
+      timeout: 10s
+      retries: 5
     # volumes:
     #   - .:/usr/src/app
   reservations:
@@ -42,6 +49,11 @@ services:
       - '3002:3002'
     env_file:
       - .env
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3002/health']
+      interval: 30s
+      timeout: 10s
+      retries: 5
     # volumes:
     #   - .:/usr/src/app
   hotels:
@@ -54,6 +66,11 @@ services:
       - '3003:3003'
     env_file:
       - .env
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3003/health']
+      interval: 30s
+      timeout: 10s
+      retries: 5
     # volumes:
     #   - .:/usr/src/app
   payments:
@@ -66,7 +83,29 @@ services:
       - '3004:3004'
     env_file:
       - .env
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3004/health']
+      interval: 30s
+      timeout: 10s
+      retries: 5
     # volumes:
     #   - .:/usr/src/app
   mongo:
     image: mongo
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - '9090:9090'
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  grafana-storage:

@@ -5,7 +5,11 @@ import { NotificationsService } from './notifications.service';
 import { EmailService } from './email.service';
 import { SqsService } from './sqs.service';
 import { awsConfig, emailConfig } from './config/config';
-import { LoggerModule } from '@app/common';
+import {
+  LoggerModule,
+  CustomPrometheusModule,
+  HealthModule,
+} from '@app/common';
 
 @Module({
   imports: [
@@ -15,6 +19,8 @@ import { LoggerModule } from '@app/common';
     }),
     ScheduleModule.forRoot(),
     LoggerModule,
+    CustomPrometheusModule,
+    HealthModule,
   ],
   providers: [NotificationsService, EmailService, SqsService],
 })

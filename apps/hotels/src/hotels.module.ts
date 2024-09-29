@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
 import { RoomsResolver } from './rooms/room.resolver';
 import { RoomsService } from './rooms/rooms.service';
 import { Room, RoomSchema } from './entities/room.entity';
+import { CustomPrometheusModule, HealthModule } from '@app/common';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { Room, RoomSchema } from './entities/room.entity';
     JwtModule,
     AuthModule,
     DatabaseModule,
+    CustomPrometheusModule,
+    HealthModule,
     DatabaseModule.forFeature([
       { name: Hotel.name, schema: HotelSchema },
       { name: Room.name, schema: RoomSchema },
