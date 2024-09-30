@@ -7,7 +7,7 @@ services:
       target: development
     command: npm run start:dev
     ports:
-      - '3006:3006'
+      - '3000:3006'
     env_file:
       - .env
     depends_on:
@@ -103,7 +103,7 @@ services:
   grafana:
     image: grafana/grafana:latest
     ports:
-      - '3000:3000'
+      - '3100:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
 
