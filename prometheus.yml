@@ -17,3 +17,11 @@ scrape_configs:
     metrics_path: '/metrics'
     static_configs:
       - targets: ['host.docker.internal:3000','host.docker.internal:3001', 'host.docker.internal:3002', 'host.docker.internal:3003', 'host.docker.internal:3004', 'host.docker.internal:3005']
+  
+  - job_name: 'hotel-hive.users'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['users:3001']

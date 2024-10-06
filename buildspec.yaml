@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 381491932560.dkr.ecr.us-east-1.amazonaws.com
+
+  build:
+    commands:
+      - docker build -t hotel-hive/gateway-service -f ./apps/hotel-hive.services/Dockerfile .
+      - docker tag hotel-hive/gateway-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/gateway-service:latest
+
+      - docker build -t hotel-hive/reservations-service -f ./apps/hotel-hive.services/Dockerfile .
+      - docker tag hotel-hive/reservations-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/reservations-service:latest
+      
+      - docker build -t hotel-hive/users-service -f ./apps/hotel-hive.services/Dockerfile .
+      - docker tag hotel-hive/users-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/users-service:latest
+
+      - docker build -t hotel-hive/hotels-service -f ./apps/hotel-hive.services/Dockerfile .
+      - docker tag hotel-hive/hotels-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/hotels-service:latest
+
+      - docker build -t hotel-hive/payments-service -f ./apps/hotel-hive.services/Dockerfile .
+      - docker tag hotel-hive/payments-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/payments-service:latest
+
+      # - docker build -t hotel-hive/notifications-service -f ./apps/hotel-hive.services/Dockerfile .
+      # - docker tag hotel-hive/notifications-service:latest 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/notifications-service:latest
+  post_build:
+    commands:
+      - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/gateway-service:latest
+      - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/reservations-service:latest
+      - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/users-service:latest
+      - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/hotels-service:latest
+      - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/payments-service:latest
+      # - docker push 381491932560.dkr.ecr.us-east-1.amazonaws.com/hotel-hive/gateway-service:latest

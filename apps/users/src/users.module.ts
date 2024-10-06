@@ -14,7 +14,11 @@ import { AuthModule } from '@app/common';
 import { AuthResolver } from './auth/auth.resolver';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { CustomPrometheusModule, HealthModule } from '@app/common';
+import {
+  CustomPrometheusModule,
+  HealthModule,
+  ApolloPrometheusPlugin,
+} from '@app/common';
 
 @Module({
   imports: [
@@ -27,6 +31,7 @@ import { CustomPrometheusModule, HealthModule } from '@app/common';
     DatabaseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     LoggerModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      plugins: [new ApolloPrometheusPlugin()],
       driver: ApolloFederationDriver,
       autoSchemaFile: {
         federation: 2,

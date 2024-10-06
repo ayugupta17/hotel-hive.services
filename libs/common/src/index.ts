@@ -6,3 +6,4 @@ export * from './auth/auth.service';
 export * from './prometheus/prometheus.module';
 export * from './health/health.module';
 export * from './entities/entities.module';
+export * from './prometheus/apollo-prometheus.plugin';
