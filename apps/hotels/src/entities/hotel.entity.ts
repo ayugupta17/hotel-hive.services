@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Field, ObjectType, ID } from '@nestjs/graphql';
+import { Field, ObjectType, ID, Directive } from '@nestjs/graphql';
 
 @ObjectType()
+@Directive('@key(fields: "id")')
 @Schema()
 export class Hotel extends Document {
   @Field((type) => ID)

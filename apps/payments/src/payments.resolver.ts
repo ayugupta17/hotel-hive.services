@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { PaymentsService } from './payments.service';
 import { Payment } from './entities/payment.entity';
 import { UseGuards } from '@nestjs/common';
@@ -61,5 +67,12 @@ export class PaymentsResolver {
   @UseGuards(AuthGuard)
   removePayment(@Args('id') id: string): Promise<boolean> {
     return this.paymentsService.remove(id).then(() => true);
+  }
+  @ResolveReference()
+  resolveReference(reference: {
+    __typename: string;
+    id: string;
+  }): Promise<Payment> {
+    return this.paymentsService.findOne(reference.id);
   }
 }

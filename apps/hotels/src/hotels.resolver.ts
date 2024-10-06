@@ -6,6 +6,7 @@ import {
   Args,
   ResolveField,
   Parent,
+  ResolveReference,
 } from '@nestjs/graphql';
 import { HotelsService } from './hotels.service';
 import { Hotel } from './entities/hotel.entity';
@@ -96,9 +97,16 @@ export class HotelsResolver {
   removeHotel(@Args('id') id: string): Promise<boolean> {
     return this.hotelsService.remove(id).then(() => true);
   }
-  @ResolveField('rooms', (returns) => [Room])
-  async getRooms(@Parent() hotel: Hotel): Promise<Room[]> {
-    const { id } = hotel;
-    return this.roomsService.findByHotelId(id);
+  // @ResolveField('rooms', (returns) => [Room])
+  // async getRooms(@Parent() hotel: Hotel): Promise<Room[]> {
+  //   const { id } = hotel;
+  //   return this.roomsService.findByHotelId(id);
+  // }
+  @ResolveReference()
+  resolveReference(reference: {
+    __typename: string;
+    id: string;
+  }): Promise<Hotel> {
+    return this.hotelsService.findOne(reference.id);
   }
 }

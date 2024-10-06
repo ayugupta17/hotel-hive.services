@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { UseGuards } from '@nestjs/common';
@@ -45,5 +51,12 @@ export class UsersResolver {
   removeUser(@Args('id') id: string): boolean {
     this.usersService.remove(id);
     return true;
+  }
+  @ResolveReference()
+  resolveReference(reference: {
+    __typename: string;
+    id: string;
+  }): Promise<User> {
+    return this.usersService.findOne(reference.id);
   }
 }

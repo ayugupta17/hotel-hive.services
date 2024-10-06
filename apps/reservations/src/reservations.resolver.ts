@@ -1,8 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ReservationsService } from './reservations.service';
 import { Reservation } from './entities/reservation.entity';
-import { AuthGuard } from '@app/common';
+import { AuthGuard, User, Hotel, Payment } from '@app/common';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver((of) => Reservation)
@@ -91,5 +99,17 @@ export class ReservationsResolver {
   @UseGuards(AuthGuard)
   removeReservation(@Args('id') id: string): Promise<boolean> {
     return this.reservationsService.remove(id).then(() => true);
+  }
+  @ResolveField(() => Hotel)
+  hotel(@Parent() reservation: Reservation): any {
+    return { __typename: 'Hotel', id: reservation.hotelId };
+  }
+  @ResolveField(() => User)
+  user(@Parent() reservation: Reservation): any {
+    return { __typename: 'User', id: reservation.userId };
+  }
+  @ResolveField(() => Payment)
+  payment(@Parent() reservation: Reservation): any {
+    return { __typename: 'User', id: reservation.paymentId };
   }
 }

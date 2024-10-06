@@ -2,6 +2,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Field, ObjectType, ID, Directive } from '@nestjs/graphql';
+import { Hotel, Payment, User } from '@app/common';
 
 @ObjectType()
 @Schema()
@@ -43,5 +44,11 @@ export class Reservation extends Document {
   @Field()
   @Prop({ default: Date.now })
   modifiedOn: Date;
+  @Field(() => Hotel)
+  hotel?: Hotel;
+  @Field(() => User)
+  user?: User;
+  @Field(() => Payment)
+  payment?: Payment;
 }
 export const ReservationSchema = SchemaFactory.createForClass(Reservation);
